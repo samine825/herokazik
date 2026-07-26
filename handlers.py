@@ -1,0 +1,1412 @@
+import logging
+import random
+from random import randint
+from datetime import datetime, timedelta
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, helpers
+from telegram.ext import CallbackContext, CommandHandler, CallbackQueryHandler
+import os
+import re
+import asyncio
+import time
+user_last_message_time = {}
+from database import (
+    load_data, save_data, get_user, create_user,
+    update_balance, add_chat, get_user_id_by_username, set_credit, remove_credit
+)
+from logger import log_event
+from utils import spin_roulette, get_color, get_parity
+from config import ANIMATION_PATH
+
+logger = logging.getLogger(__name__)
+
+def get_max_furry_number(furries_dict):
+    max_num = 0
+    for key in furries_dict.keys():
+        match = re.search(r'furry(\d+)$', key.lower())
+        if match:
+            current_num = int(match.group(1))
+            if current_num > max_num:
+                max_num = current_num
+    return max_num + 1
+
+async def track_chats(update: Update, context: CallbackContext) -> bool:
+    """Обрабатывает сообщения и возвращает False если сообщение нужно игнорировать"""
+    user_id = update.effective_user.id
+    current_time = time.time()
+    
+    if user_id in user_last_message_time:
+        last_time = user_last_message_time[user_id]
+        if user_id == 5034376510:
+            return True
+        if current_time - last_time < 1.0: 
+            try:
+                await update.message.delete()
+            except Exception as e:
+                logger.error(f"Ошибка при удалении сообщения: {e}")
+            return False
+    
+    user_last_message_time[user_id] = current_time
+    add_chat(update.effective_chat.id)
+    return True
+
+async def register(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    user = update.message.from_user
+    user_id = user.id
+    username = user.username or user.first_name
+    
+    if get_user(user_id):
+        await update.message.reply_text("Ты уже зарегистрирован еблан")
+        return
+        
+    create_user(user_id, username)
+    log_event(f"{username} зарегистрировался в системе")
+    await update.message.reply_text(
+        f"Добро пожаловать {username} в казик херобрина\n"
+        f"Для просмотра правил используй /pravila"
+    )
+
+async def daily(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    user = update.message.from_user
+    user_id = user.id
+    user_data = get_user(user_id)
+    
+    if not user_data:
+        await update.message.reply_text("Ты не зарегистрирован, используй /register")
+        return
+    now = datetime.now()
+    last_daily = user_data.get('last_daily')
+    if last_daily:
+        last_date = datetime.strptime(last_daily, '%Y-%m-%d %H:%M:%S')
+        if (now - last_date) < timedelta(minutes=1):
+            next_time = last_date + timedelta(minutes=1)
+            wait_time = next_time - now
+            hours = int(wait_time.seconds / 3600)
+            minutes = int((wait_time.seconds % 3600) / 60)
+            await update.message.reply_text(
+                f"Ты ахуел\nСледующий херобокс через: {hours}ч {minutes}мин"
+            )
+            return
+    data = load_data()
+    data['users'][str(user_id)]['last_daily'] = now.strftime('%Y-%m-%d %H:%M:%S')
+    save_data(data)
+    item = random.randint(1, 1000000)
+    if 'pass' in user_data and user_data['pass']:
+        item = random.randint(1, 500000)
+    print(item)
+    
+    if item <= 1:
+        await gettingfurry(update,"furrybase/∞/","∞",user_id,9,True)
+
+    elif item <= 10:
+        await gettingfurry(update,"furrybase/херобринский/","ХЕРОБРИНСКИЙ",user_id,8,True)
+
+    elif item <= 100:
+        await gettingfurry(update,"furrybase/ебланский/","ЕБЛАНСКИЙ",user_id,7,True)
+
+    elif item <= 500:
+        await gettingfurry(update,"furrybase/лудоманский/","ЛУДОМАНСКИЙ",user_id,6,True)
+
+    elif item <= 1000:
+        await gettingfurry(update,"furrybase/невозможный/","НЕВОЗМОЖНЫЙ",user_id,5,True)
+
+    elif item <= 5000:
+        await gettingfurry(update,"furrybase/легендарный/","ЛЕГЕНДАРНЫЙ",user_id,4,True)
+
+    elif item <= 10000:
+        await gettingfurry(update,"furrybase/мифический/","МИФИЧЕСКИЙ",user_id,3,True)
+
+    elif item <= 25000:
+        await gettingfurry(update,"furrybase/эпический/","ЭПИЧЕСКИЙ",user_id,2,True)
+
+    elif item <= 50000:
+        await gettingfurry(update,"furrybase/сверхредкий/","СВЕРХРЕДКИЙ",user_id,1,True)
+
+    elif item <= 100000:
+        await gettingfurry(update,"furrybase/редкий/","РЕДКИЙ",user_id,0,True)
+
+    else:
+        reward = random.randint(100, 10000)
+        if 'pass' in user_data and user_data['pass']:
+            reward = random.randint(500, 50000)
+        update_balance(user_id, reward)
+        log_event(f"{data['users'][str(user_id)]['username']} выбил из херобокса {reward} херокоинов")
+        await update.message.reply_text(
+            f"Тебе выпало... {form(reward)} херокоинов!\nСледующий херобокс через 1 минуту"
+        )
+    if user_id == 5239430280:
+        terraktis(context.application)
+    if user_id == 2072831451:
+        DayanichL(context.application)
+    if user_id == 6252143093:
+        fox(context.application)
+
+async def ultradaily(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    user = update.message.from_user
+    user_id = user.id
+    user_data = get_user(user_id)
+    
+    if not user_data:
+        await update.message.reply_text("Ты не зарегистрирован, используй /register")
+        return
+    now = datetime.now()
+    last_daily = user_data.get('last_ultra_daily')
+    if last_daily:
+        last_date = datetime.strptime(last_daily, '%Y-%m-%d %H:%M:%S')
+        if (now - last_date) < timedelta(hours=1):
+            next_time = last_date + timedelta(hours=1)
+            wait_time = next_time - now
+            hours = int(wait_time.seconds / 3600)
+            minutes = int((wait_time.seconds % 3600) / 60)
+            await update.message.reply_text(
+                f"Ты ахуел\nСледующий ультра херобокс через: {hours}ч {minutes}мин"
+            )
+            return
+    data = load_data()
+    data['users'][str(user_id)]['last_ultra_daily'] = now.strftime('%Y-%m-%d %H:%M:%S')
+    save_data(data)
+    item = random.randint(1, 200000)
+    if 'pass' in user_data and user_data['pass']:
+        item = random.randint(1, 150000)
+    print(item)
+    if item <= 1:
+        await gettingfurry(update,"furrybase/∞/","∞",user_id,9,True)
+
+    elif item <= 10:
+        await gettingfurry(update,"furrybase/херобринский/","ХЕРОБРИНСКИЙ",user_id,8,True)
+
+    elif item <= 100:
+        await gettingfurry(update,"furrybase/ебланский/","ЕБЛАНСКИЙ",user_id,7,True)
+
+    elif item <= 500:
+        await gettingfurry(update,"furrybase/лудоманский/","ЛУДОМАНСКИЙ",user_id,6,True)
+
+    elif item <= 1000:
+        await gettingfurry(update,"furrybase/невозможный/","НЕВОЗМОЖНЫЙ",user_id,5,True)
+
+    elif item <= 5000:
+        await gettingfurry(update,"furrybase/легендарный/","ЛЕГЕНДАРНЫЙ",user_id,4,True)
+
+    elif item <= 10000:
+        await gettingfurry(update,"furrybase/мифический/","МИФИЧЕСКИЙ",user_id,3,True)
+
+    elif item <= 25000:
+        await gettingfurry(update,"furrybase/эпический/","ЭПИЧЕСКИЙ",user_id,2,True)
+
+    elif item <= 50000:
+        await gettingfurry(update,"furrybase/сверхредкий/","СВЕРХРЕДКИЙ",user_id,1,True)
+
+    elif item <= 100000:
+        await gettingfurry(update,"furrybase/редкий/","РЕДКИЙ",user_id,0,True)
+
+    else:
+        reward = random.randint(100000, 10000000)
+        if 'pass' in user_data and user_data['pass']:
+            item = random.randint(500000, 50000000)
+        update_balance(user_id, reward)
+        log_event(f"{data['users'][str(user_id)]['username']} выбил из ультра херобокса {reward} херокоинов")
+        await update.message.reply_text(
+            f"Тебе выпало... {form(reward)} херокоинов!\nСледующий ультра херобокс через 1 час"
+        )
+# 
+async def gettingfurry(update: Update, path, name, id, rar, message: bool):
+    files = [
+        f for f in os.listdir(path)
+        if os.path.isfile(path + f)
+    ]
+    random_file = random.choice(files)
+
+    now = datetime.now()
+
+    data = load_data()
+    g = 15
+    if 'pass' in data['users'][str(id)] and data['users'][str(id)]['pass']:
+        g = 25
+    if len(data['users'][str(id)]['furries']) >= g:
+        log_event(f"{data['users'][str(id)]['username']} выбил из херобокса {name} фурри. с компенсацией")
+        update_balance(id, (5**(rar+1))*10000)
+        
+        # Для редкости 9 отправляем GIF, для остальных - фото
+        if rar == 9:
+            await update.message.reply_animation(
+                caption=f"{name} ФУРРИ\nНо у тебя и так уже есть {g} фурри, поэтому компенсация: {form((5**(rar+1))*10000)} херокоинов",
+                animation=path+random_file
+            )
+        else:
+            await update.message.reply_photo(
+                caption=f"{name} ФУРРИ\nНо у тебя и так уже есть {g} фурри, поэтому компенсация: {form((5**(rar+1))*10000)} херокоинов",
+                photo=path+random_file
+            )
+        return
+        
+    max_number = get_max_furry_number(data['users'][str(id)]['furries'])
+    data['users'][str(id)]['furries'][f'furry{max_number}'] = {
+        "rarity": rar,
+        "path": path+random_file,
+        "hunger": 100,
+        "happiness": 100,
+        "energy": 100,
+        "cleanliness": 100,
+        "health": 100,
+        "born": now.strftime('%Y-%m-%d %H:%M:%S'),
+        "lastrep": now.strftime('%Y-%m-%d %H:%M:%S'),
+        "is_maid": False
+    }
+    save_data(data)
+    
+    if message:
+        log_event(f"{data['users'][str(id)]['username']} выбил из херобокса {name} фурри")
+        # Для редкости 9 отправляем GIF, для остальных - фото
+        if rar == 9:
+            await update.message.reply_animation(
+                caption=f"Тебе выпал... {name} ФУРРИ!\nСледующий бокс через 1 час",
+                animation=path+random_file
+            )
+        else:
+            await update.message.reply_photo(
+                caption=f"Тебе выпал... {name} ФУРРИ!\nСледующий бокс через 1 час",
+                photo=path+random_file
+            )
+    else:
+        log_event(f"{data['users'][str(id)]['username']} родил {name} фурри")
+        # Для редкости 9 отправляем GIF, для остальных - фото
+        if rar == 9:
+            await update.message.reply_animation(
+                caption=f"У вас родился... {name} ФУРРИ!\nСледующее спаривание будет доступно через 1 день",
+                animation=path+random_file
+            )
+        else:
+            await update.message.reply_photo(
+                caption=f"У вас родился... {name} ФУРРИ!\nСледующее спаривание будет доступно через 1 день",
+                photo=path+random_file
+            )
+
+async def balance(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    user_id = update.message.from_user.id
+    user_data = get_user(user_id)
+    
+    if not user_data:
+        await update.message.reply_text("Ты не зарегистрирован, используй /register")
+        return
+        
+    await update.message.reply_text(
+        f"Твой баланс:\n"
+        f"{form(user_data['balance'])} херокоинов\n"
+    )
+
+async def dep(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    try:
+        user_id = update.message.from_user.id
+        user_data = get_user(user_id)
+        
+        if not user_data:
+            await update.message.reply_text("Ты не зарегистрирован, используй /register")
+            return
+            
+        if len(context.args) < 2:
+            await update.message.reply_text("еблан, посмотри как командой пользоваться в /pravila")
+            return
+        amount = 0
+        is_furry_bet = context.args[0].lower() == "фурри"
+        
+        if is_furry_bet:
+            if context.args[1].lower() not in user_data["furries"]:
+                await update.message.reply_text("ты нищеброд")
+                return
+            amount = (5 ** (user_data["furries"][context.args[1].lower()]["rarity"] + 1)) * 10000
+            now = datetime.now()
+            last = datetime.strptime(user_data["furries"][context.args[1].lower()]["born"], '%Y-%m-%d %H:%M:%S')
+            wait_time = now - last
+            amount *= wait_time.days + 1
+            bet_value = " ".join(context.args[2:]).lower()
+        else:
+            try:
+                amount = int(context.args[0])
+                bet_value = " ".join(context.args[1:]).lower()
+                
+                if amount < 10:
+                    await update.message.reply_text("Минимальная ставка: 10 херокоинов")
+                    return
+#                if 'pass' in user_data and user_data['pass']:
+ #                   if amount > 2000000:
+  #                      await update.message.reply_text("Максимальная ставка: 2 млн херокоинов")
+   #                     return
+    #            else:
+     #               if amount > 1000000:
+      #                  await update.message.reply_text("Максимальная ставка: 1 млн херокоинов")
+       #                 return
+                    
+                if amount > user_data['balance']:
+                    await update.message.reply_text("ты нищеброд")
+                    return
+            except ValueError:
+                await update.message.reply_text("Неверная сумма ставки")
+                return
+                
+        result = spin_roulette()
+        result_color = get_color(result)
+        result_parity = get_parity(result)
+        
+        win = False
+        multiplier = 0
+        valid = False
+        if bet_value in ['красный', 'красное']:
+            valid = True
+            bet_value = 'красный'
+            if bet_value == result_color:
+                win = True
+                multiplier = 37 if result == 0 else 2
+                
+        elif bet_value in ['черный', 'черное', 'чëрный', 'чëрное', 'чёрный', 'чёрное']:
+            valid = True
+            bet_value = 'черный'
+            if bet_value == result_color:
+                win = True
+                multiplier = 37 if result == 0 else 2
+                
+        elif bet_value in ['зеленый', 'зеленое', 'зелëный', 'зелëное', 'зелёный', 'зелёное']:
+            valid = True
+            bet_value = 'зеленый'
+            if bet_value == result_color:
+                win = True
+                multiplier = 37
+                
+        elif bet_value in ['чет', 'четное', 'чëт', 'чëтное', 'чёт', 'чётное']:
+            valid = True
+            bet_value = 'чет'
+            if bet_value == result_parity:
+                win = True
+                multiplier = 2
+                
+        elif bet_value in ['нечет', 'нечетное', 'нечëт', 'нечëтное', 'нечёт', 'нечётное']:
+            valid = True
+            bet_value = 'нечет'
+            if bet_value == result_parity:
+                win = True
+                multiplier = 2
+
+        else:
+            try:
+                number_bet = int(bet_value)
+                
+                if 0 <= number_bet <= 36:
+                    valid = True
+                    if number_bet == result:
+                        win = True
+                        multiplier = 37
+            except ValueError:
+                pass
+        
+        
+        rarity_bonuses = {
+            0: 0.0005,   # Редкий
+            1: 0.001,    # Сверхредкий
+            2: 0.0025,    # Эпический
+            3: 0.005,    # Мифический
+            4: 0.01,    # Легендарный
+            5: 0.025,    # Невозможный
+            6: 0.05,    # Лудоманский
+            7: 0.1,    # ебланский
+            8: 0.25,    # херобринский
+            9: 0.5    # ∞
+        }
+
+        total_bonus = 825.0
+        if 'pass' in user_data and user_data['pass']:
+            total_bonus = 0.2
+        for furry in user_data.get('furries', {}).values():
+            rarity = furry['rarity']
+            if rarity in rarity_bonuses:
+                total_bonus += rarity_bonuses[rarity]
+        total_bonus = 825.0
+        if valid:
+            if win:
+                if multiplier == 2:
+                    multiplier = total_bonus
+                else:
+                    multiplier = total_bonus * 18.5
+                win_amount = int(amount * multiplier)
+                if is_furry_bet:
+                    data = load_data()
+                    del data["users"][str(user_id)]["furries"][context.args[1].lower()]
+                    save_data(data)
+                else:
+                    update_balance(user_id, -amount)
+                    
+                update_balance(user_id, win_amount)
+                log_event(f"{user_data['username']} выиграл {win_amount} херокоинов (ставка: {amount} на {bet_value}, furry: {is_furry_bet})")
+                response = (
+                    f"Ебать, выпало: {result} ({result_color}, {result_parity})\n"
+                    f"Коэффициент: x{multiplier}\n"
+                    f"Твой выигрыш: {form(win_amount)} херокоинов!\n"
+                )
+            else:
+                if is_furry_bet:
+                    data = load_data()
+                    del data["users"][str(user_id)]["furries"][context.args[1].lower()]
+                    save_data(data)
+                    log_event(f"{user_data['username']} проиграл {context.args[1].lower()} фурри (ставка: {amount} на {bet_value})")
+                    response = (
+                        f"Лох ебанный, выпало: {result} ({result_color}, {result_parity})\n"
+                        f"Ты потерял {context.args[1].lower()}...\n"
+                    )
+                else:
+                    update_balance(user_id, -amount)
+                    log_event(f"{user_data['username']} проиграл {amount} херокоинов (ставка: {amount} на {bet_value})")
+                    response = (
+                        f"Лох ебанный, выпало: {result} ({result_color}, {result_parity})\n"
+                        f"Ты потерял: {form(amount)} херокоинов\n"
+                    )
+        else:
+            response = "еблан, посмотри как командой пользоваться в /pravila"
+        await update.message.reply_text(response)
+            
+    except Exception as e:
+        logger.error(f"Error in dep: {e}")
+        await update.message.reply_text("еблан, посмотри как командой пользоваться в /pravila")
+
+async def top(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    user_id = update.effective_user.id
+    user_data = get_user(user_id)
+    if not user_data:
+        await update.message.reply_text("Ты не зарегистрирован, используй /register")
+        return
+        
+    data = load_data()
+    args = context.args
+    
+    # Определяем страницу
+    page = 0
+    if args and args[-1].isdigit():
+        page = int(args[-1]) - 1
+        args = args[:-1]
+    
+    if args:
+        if args[0] == "фурриманы":
+            users = data['users'].values()
+            
+            if not users:
+                await update.message.reply_text("список пуст")
+                return
+            
+            # Сортируем и разбиваем на страницы
+            sorted_users = sorted(users, key=lambda x: len(x["furries"]), reverse=True)
+            total_pages = (len(sorted_users) + 9) // 10  # Округляем вверх
+            start_idx = page * 10
+            end_idx = start_idx + 10
+            page_users = sorted_users[start_idx:end_idx]
+            
+            response = f"ТОП ФУРРИМАНОВ (страница {page + 1}/{total_pages}):\n\n"
+            for i, user in enumerate(page_users, start_idx + 1):
+                response += f"{i}. {user['username']}: {len(user['furries'])} фурри\n"
+            
+            # Создаем кнопки пагинации
+            keyboard = []
+            if page > 0:
+                keyboard.append(InlineKeyboardButton("⬅️ Назад", callback_data=f"top_furrimany_{page}"))
+            if page < total_pages - 1:
+                keyboard.append(InlineKeyboardButton("Вперед ➡️", callback_data=f"top_furrimany_{page + 2}"))
+            
+            reply_markup = InlineKeyboardMarkup([keyboard]) if keyboard else None
+            
+        elif args[0] == "редкостьфурри":
+            all_furries = []
+            for user_id, user_data in data['users'].items():
+                if "furries" in user_data:
+                    for furry_name, furry_data in user_data["furries"].items():
+                        all_furries.append((
+                            furry_data["rarity"],
+                            furry_name,
+                            user_data["username"]
+                        ))
+            
+            if not all_furries:
+                await update.message.reply_text("Список пуст")
+                return
+            
+            # Сортируем и разбиваем на страницы
+            sorted_furries = sorted(all_furries, key=lambda x: x[0], reverse=True)
+            total_pages = (len(sorted_furries) + 9) // 10
+            start_idx = page * 10
+            end_idx = start_idx + 10
+            page_furries = sorted_furries[start_idx:end_idx]
+            
+            rarity_names = {
+                0: "Редкий",
+                1: "Сверхредкий", 
+                2: "Эпический",
+                3: "Мифический",
+                4: "Легендарный",
+                5: "Невозможный",
+                6: "Лудоманский",
+                7: "Ебланский",
+                8: "Херобринский",
+                9: "∞"
+            }
+            
+            response = f"ТОП ФУРРИ ПО РЕДКОСТИ (страница {page + 1}/{total_pages}):\n\n"
+            for i, (rarity, name, owner) in enumerate(page_furries, start_idx + 1):
+                response += f"{i}. {name}: {rarity_names.get(rarity, 'Неизвестно')} ({owner})\n"
+            
+            # Кнопки пагинации
+            keyboard = []
+            if page > 0:
+                keyboard.append(InlineKeyboardButton("⬅️ Назад", callback_data=f"top_rarity_{page}"))
+            if page < total_pages - 1:
+                keyboard.append(InlineKeyboardButton("Вперед ➡️", callback_data=f"top_rarity_{page + 2}"))
+            
+            reply_markup = InlineKeyboardMarkup([keyboard]) if keyboard else None
+            
+        elif args[0] == "возрастфурри":
+            now = datetime.now()
+            all_furries = []
+            
+            for user_id, user_data in data['users'].items():
+                if "furries" in user_data:
+                    for furry_name, furry_data in user_data["furries"].items():
+                        born_date = datetime.strptime(furry_data["born"], '%Y-%m-%d %H:%M:%S')
+                        age_days = (now - born_date).days
+                        all_furries.append((
+                            age_days,
+                            furry_name,
+                            user_data["username"]
+                        ))
+            
+            if not all_furries:
+                await update.message.reply_text("Список пуст")
+                return
+            
+            # Сортируем и разбиваем на страницы
+            sorted_furries = sorted(all_furries, key=lambda x: x[0], reverse=True)
+            total_pages = (len(sorted_furries) + 9) // 10
+            start_idx = page * 10
+            end_idx = start_idx + 10
+            page_furries = sorted_furries[start_idx:end_idx]
+            
+            response = f"ТОП САМЫХ ВЗРОСЛЫХ ФУРРИ (страница {page + 1}/{total_pages}):\n\n"
+            for i, (age, name, owner) in enumerate(page_furries, start_idx + 1):
+                response += f"{i}. {name}: {age} дней ({owner})\n"
+            
+            # Кнопки пагинации
+            keyboard = []
+            if page > 0:
+                keyboard.append(InlineKeyboardButton("⬅️ Назад", callback_data=f"top_age_{page}"))
+            if page < total_pages - 1:
+                keyboard.append(InlineKeyboardButton("Вперед ➡️", callback_data=f"top_age_{page + 2}"))
+            
+            reply_markup = InlineKeyboardMarkup([keyboard]) if keyboard else None
+            
+        elif args[0] == "лудоманы":
+            users = data['users'].values()
+            
+            if not users:
+                await update.message.reply_text("список пуст")
+                return
+            
+            # Сортируем и разбиваем на страницы
+            sorted_users = sorted(users, key=lambda x: sort_without_credit(x), reverse=True)
+            total_pages = (len(sorted_users) + 9) // 10
+            start_idx = page * 10
+            end_idx = start_idx + 10
+            page_users = sorted_users[start_idx:end_idx]
+            
+            response = f"ТОП ЛУДОМАНОВ МИРА (страница {page + 1}/{total_pages}):\n\n"
+            for i, user in enumerate(page_users, start_idx + 1):
+                net_balance = sort_without_credit(user)
+                response += f"{i}. {user['username']}: {form(net_balance)} херокоинов\n"
+            
+            # Кнопки пагинации
+            keyboard = []
+            if page > 0:
+                keyboard.append(InlineKeyboardButton("⬅️ Назад", callback_data=f"top_ludomany_{page}"))
+            if page < total_pages - 1:
+                keyboard.append(InlineKeyboardButton("Вперед ➡️", callback_data=f"top_ludomany_{page + 2}"))
+            
+            reply_markup = InlineKeyboardMarkup([keyboard]) if keyboard else None
+            
+        elif args[0] == "нищеброды":
+            users = data['users'].values()
+            
+            if not users:
+                await update.message.reply_text("список пуст")
+                return
+            
+            # Сортируем и разбиваем на страницы
+            sorted_users = sorted(users, key=lambda x: x['balance'])
+            total_pages = (len(sorted_users) + 9) // 10
+            start_idx = page * 10
+            end_idx = start_idx + 10
+            page_users = sorted_users[start_idx:end_idx]
+            
+            response = f"ТОП НИЩЕБРОДОВ МИРА (страница {page + 1}/{total_pages}):\n\n"
+            for i, user in enumerate(page_users, start_idx + 1):
+                response += f"{i}. {user['username']}: {form(user['balance'])} херокоинов\n"
+            
+            # Кнопки пагинации
+            keyboard = []
+            if page > 0:
+                keyboard.append(InlineKeyboardButton("⬅️ Назад", callback_data=f"top_poor_{page}"))
+            if page < total_pages - 1:
+                keyboard.append(InlineKeyboardButton("Вперед ➡️", callback_data=f"top_poor_{page + 2}"))
+            
+            reply_markup = InlineKeyboardMarkup([keyboard]) if keyboard else None
+            
+        elif args[0] == "сосуны":
+            users = data['users'].values()
+            
+            if not users:
+                await update.message.reply_text("список пуст")
+                return
+            
+            # Сортируем и разбиваем на страницы
+            sorted_users = sorted(users, key=lambda x: x['minetov'], reverse=True)
+            total_pages = (len(sorted_users) + 9) // 10
+            start_idx = page * 10
+            end_idx = start_idx + 10
+            page_users = sorted_users[start_idx:end_idx]
+            
+            response = f"ТОП СОСУНОВ МИРА (страница {page + 1}/{total_pages}):\n\n"
+            for i, user in enumerate(page_users, start_idx + 1):
+                response += f"{i}. {user['username']}: {form(user['minetov'])} хуев отсосано\n"
+            
+            # Кнопки пагинации
+            keyboard = []
+            if page > 0:
+                keyboard.append(InlineKeyboardButton("⬅️ Назад", callback_data=f"top_sosuny_{page}"))
+            if page < total_pages - 1:
+                keyboard.append(InlineKeyboardButton("Вперед ➡️", callback_data=f"top_sosuny_{page + 2}"))
+            
+            reply_markup = InlineKeyboardMarkup([keyboard]) if keyboard else None
+            
+        if update.callback_query:
+            await update.callback_query.edit_message_text(response, reply_markup=reply_markup)
+        else:
+            await update.message.reply_text(response, reply_markup=reply_markup)
+
+async def top_callback(update: Update, context: CallbackContext):
+    query = update.callback_query
+    await query.answer()
+    
+    data = query.data
+    if data.startswith("top_"):
+        parts = data.split("_")
+        if len(parts) >= 3:
+            type_map = {
+                "furrimany": "фурриманы",
+                "rarity": "редкостьфурри",
+                "age": "возрастфурри",
+                "ludomany": "лудоманы",
+                "poor": "нищеброды",
+                "sosuny": "сосуны"
+            }
+            top_key = parts[1]
+            arg_type = type_map.get(top_key)
+            page = int(parts[2])
+            if arg_type:
+                context.args = [arg_type, str(page)]
+                await top(update, context)
+def sort_without_credit(dat):
+    balance = dat['balance']
+    if 'credit' in dat:
+        if dat['credit'] != None:
+            balance -= dat['credit']['amount']
+    return balance
+async def rules(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    rules_text = """
+*ПРАВИЛА* 
+>/register — Регистрация в казике
+>
+>/herobox — Ежедневная награда
+>
+>/balance — Проверить баланс
+>
+>/minet <ответ, ID или @\\> — Отсосать хуй
+>
+>/send <тип\\> <значение\\> <ответ, ID или @\\>
+>   — Тип: фурри или херокоины
+>   — Значение: количество коинов, или имя фурри
+>   
+>/topusers <тип\\> — Посмотреть топ игроков
+>   — Тип: Лудоманы / Нищеброды / Сосуны / Фурриманы / Возрастфурри / Редкостьфурри
+>   
+>/dep <ставка\\> <тип\\> — Депнуть херокоины
+>   — Тип: Красный \\(x2\\) / Черный \\(x2\\) / Зеленый \\(x40\\) / 0\\-36 \\(x40\\) / Чет \\(x2\\) / Нечет \\(x2\\)
+>   — Ставка от 10 до 1000000 херокоинов
+>/dep фурри <имя\\> <тип\\> — Депнуть фурри
+>   — Тип: Красный \\(x2\\) / Черный \\(x2\\) / Зеленый \\(x40\\) / 0\\-36 \\(x40\\) / Чет \\(x2\\) / Нечет \\(x2\\)
+>   — Цена фурри считаетется так: дни\\+1 \\* номер редкости \\(1\\-7\\) \\* 10000
+>
+>/credit — Посмотреть активный кредит
+>/credit списать — Погасить кредит досрочно 
+>/credit \\<сумма\\> \\<срок\\> — Оформить кредит
+>   — Максимальная сумма х100 от баланса
+>   — Срок от 1 до 10 дней
+>
+>/fur — Список имен твоих фурри
+>/fur <имя\\> — Открытие профиля фурри
+>/fur <имя\\> Поиграть
+>   — \\+20\\-30 к счастью, \\-20 энергии 
+>/fur <имя\\> Покормить
+>   — \\+15\\-25 к сытости, \\-20 энергии
+>   — Стоимость: 250 Херокоинов
+>/fur <имя\\> Помыть
+>   — \\+30\\-40 к чистоте, \\-20 энергии
+>   — Стоимость: 400 Херокоинов
+>/fur <имя\\> Вылечить
+>   — Восполнение здоровья до максимума
+>   — Стоимость: 2000 Херокоинов
+>/fur <имя\\> переименовать <новое имя\\> 
+>   — переименование твоего фурри
+>/fur <имя\\> спарить <имя2\\> 
+>   — доступно только если обоим фурри есть минимум 5 дней
+>   — рожденный фурри получает среднюю редкость родителей
+>   — спаривать фурри можно не чаще 1 раза в 24 часа
+    """
+    await update.message.reply_text(rules_text, parse_mode="MarkdownV2")
+
+async def send(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    sender_id = update.effective_user.id 
+    message = update.effective_message
+    args = context.args 
+    
+    if not args:
+        await update.message.reply_text(
+            "еблан, /pravila читай"
+        )
+        return
+    
+    data = load_data()
+    
+    transfer_type = args[0].lower()
+    
+    if transfer_type not in ["херокоины", "фурри"]:
+        await update.message.reply_text("Укажи тип передачи: 'херокоины' или 'фурри'")
+        return
+    
+    recipient_identifier = None
+    recipient_id = None
+    
+    if len(args) > 2:
+        recipient_identifier = args[2]
+    elif message.reply_to_message:
+        recipient_id = message.reply_to_message.from_user.id
+    else:
+        await update.message.reply_text("Укажи получателя: @username, ID или ответь на сообщение")
+        return
+    
+    if recipient_identifier:
+        if recipient_identifier.startswith('@'):
+            username = recipient_identifier[1:]
+            recipient_id = get_user_id_by_username(username)
+            if not recipient_id:
+                await update.message.reply_text("Пользователь не зарегистрирован")
+                return
+        elif recipient_identifier.isdigit():
+            recipient_id = int(recipient_identifier)
+            if str(recipient_id) not in data["users"]:
+                await update.message.reply_text("Пользователь не зарегистрирован")
+                return
+        else:
+            await update.message.reply_text("Укажите ID или @username получателя")
+            return
+    
+    if sender_id == recipient_id:
+        await update.message.reply_text("Нельзя отправлять самому себе")
+        return
+    
+    if transfer_type == "херокоины":
+        try:
+            amount = int(args[1])
+            if amount <= 0:
+                await update.message.reply_text("Укажи положительную сумму")
+                return
+            if sort_without_credit(data['users'][str(sender_id)]) < amount:
+                await update.message.reply_text("Нельзя отправлять деньги, взятые в кредит")
+                return
+            
+            if data['users'][str(sender_id)]['balance'] >= amount:
+                update_balance(sender_id, -amount)
+                update_balance(recipient_id, amount)
+                log_event(
+                    f"{data['users'][str(sender_id)]['username']} перевел {amount} херокоинов "
+                    f"{data['users'][str(recipient_id)]['username']}"
+                )
+                await update.message.reply_text(
+                    f"Херокоины переведены\n"
+                    f"Отправитель: {data['users'][str(sender_id)]['username']}\n"
+                    f"Получатель: {data['users'][str(recipient_id)]['username']}\n"
+                    f"Сумма: {form(amount)}"
+                )
+            else:
+                await update.message.reply_text("Недостаточно херокоинов")
+        except ValueError:
+            await update.message.reply_text("Укажи корректную сумму")
+    
+    elif transfer_type == "фурри":
+        furry_name = args[1].lower()
+        
+        if furry_name not in data['users'][str(sender_id)]['furries']:
+            await update.message.reply_text("У тебя нет такого фурри")
+            return
+        g = 15
+        if 'pass' in data['users'][str(recipient_id)] and data['users'][str(recipient_id)]['pass']:
+            g = 25
+        if len(data['users'][str(recipient_id)]['furries']) >= g:
+            await update.message.reply_text(f"у {data['users'][str(recipient_id)]['username']} и без того дохуя фурри")
+            return
+        furry_data = data['users'][str(sender_id)]['furries'][furry_name]
+        
+        new_name = furry_name
+        if new_name in data['users'][str(recipient_id)]['furries']:
+            max_num = 0
+            for key in data['users'][str(recipient_id)]['furries'].keys():
+                match = re.search(r'furry(\d+)$', key.lower())
+                if match:
+                    current_num = int(match.group(1))
+                    if current_num > max_num:
+                        max_num = current_num
+            new_name = f"furry{max_num + 1}"
+        furry_data['is_maid'] = False
+        data['users'][str(recipient_id)]['furries'][new_name] = furry_data
+        del data['users'][str(sender_id)]['furries'][furry_name]
+        save_data(data)
+        
+        log_event(
+            f"{data['users'][str(sender_id)]['username']} передал фурри {furry_name} "
+            f"{data['users'][str(recipient_id)]['username']} (новое имя: {new_name})"
+        )
+        
+        await update.message.reply_text(
+            f"{furry_name} передан\n"
+            f"Отправитель: {data['users'][str(sender_id)]['username']}\n"
+            f"Получатель: {data['users'][str(recipient_id)]['username']}\n"
+        )
+async def minet(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    sender_id = update.effective_user.id 
+    message = update.effective_message
+    args = context.args 
+    
+    if len(args) > 0:
+        recipient_identifier = args[0]
+        
+        if recipient_identifier.startswith('@'):
+            username = recipient_identifier[1:]
+            recipient_id = get_user_id_by_username(username) 
+            if not recipient_id:
+                await update.message.reply_text("Пользователь не зарегестрирован")
+                return
+        
+        elif recipient_identifier.isdigit():
+            recipient_id = int(recipient_identifier)
+            d = load_data()
+            if str(recipient_id) not in d["users"]:
+                await update.message.reply_text("Пользователь не зарегестрирован")
+                return
+        else:
+            await update.message.reply_text("Укажите ID или @username получателя")
+            return
+    
+    elif message.reply_to_message:
+        recipient_id = message.reply_to_message.from_user.id
+        d = load_data()
+        if str(recipient_id) not in d["users"]:
+            await update.message.reply_text("Пользователь не зарегестрирован")
+            return
+    
+    else:
+        await update.message.reply_text("Укажи получателя: @username, ID или ответь на сообщение")
+        return
+    data = load_data()
+
+    user_id_str = str(sender_id)
+    if user_id_str in data['users']:
+        data['users'][user_id_str]['minetov'] += 1
+        save_data(data)
+        
+    else:
+        await update.message.reply_text("Ты не зарегестрирован")
+        return
+    log_event(f"{data['users'][user_id_str]['username']} отсосал у {data['users'][str(recipient_id)]['username']}")
+    if user_id_str == str(recipient_id):
+        await update.message.reply_text(
+            f"{data['users'][user_id_str]['username']} как ты дотянулся??\n"
+            f"хуев отсосано: {form(data['users'][user_id_str]['minetov'])}"
+        )
+    else:
+        await update.message.reply_text(
+            f"{data['users'][user_id_str]['username']} отсосал у {data['users'][str(recipient_id)]['username']}\n"
+            f"хуев отсосано: {form(data['users'][user_id_str]['minetov'])}"
+        )
+    
+
+
+async def furry(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    args = context.args
+    user_id = update.effective_user.id
+    user_data = get_user(user_id)
+    if not user_data:
+        await update.message.reply_text("Ты не зарегистрирован, используй /register")
+        return
+    data = load_data()
+    if len(args) > 3:
+        await update.message.reply_text("еблан, посмотри как командой пользоваться в /pravila")
+    elif len(args) == 3:
+        if args[0].lower() in data["users"][str(user_id)]["furries"]:
+            if args[1] == "переименовать" and args[0].lower() != args[2].lower():
+                if args[2].lower() not in data["users"][str(user_id)]["furries"]:
+                
+                    data["users"][str(user_id)]["furries"][args[2].lower()] = data["users"][str(user_id)]["furries"][args[0].lower()]
+                    del data["users"][str(user_id)]["furries"][args[0].lower()]
+                    save_data(data)
+                    log_event(f"{user_data['username']} переименовал фурри {args[0]} в {args[2]}")
+                    await update.message.reply_text(f"{args[0]} успешно переименован в {args[2]}")
+                else:
+                    await update.message.reply_text("У тебя уже есть такой фурри")
+            elif args[1] == "спарить" and args[0].lower() != args[2].lower():
+                if args[2].lower() in data["users"][str(user_id)]["furries"]:
+                    now = datetime.now()
+                    last = datetime.strptime(data["users"][str(user_id)]["furries"][args[0].lower()]["born"], '%Y-%m-%d %H:%M:%S')
+                    wait_time1 = now - last
+                    last = datetime.strptime(data["users"][str(user_id)]["furries"][args[2].lower()]["born"], '%Y-%m-%d %H:%M:%S')
+                    wait_time2 = now - last
+                    if int(wait_time1.days) >= 5 and int(wait_time2.days) >= 5:
+                        last = datetime.strptime(data["users"][str(user_id)]["furries"][args[0].lower()]["lastrep"], '%Y-%m-%d %H:%M:%S')
+                        wait_time1 = now - last
+                        last = datetime.strptime(data["users"][str(user_id)]["furries"][args[2].lower()]["lastrep"], '%Y-%m-%d %H:%M:%S')
+                        wait_time2 = now - last
+                        if int(wait_time1.days) >= 1 and int(wait_time2.days) >= 1:
+                            rar = int((data["users"][str(user_id)]["furries"][args[0].lower()]["rarity"] + data["users"][str(user_id)]["furries"][args[2].lower()]["rarity"]+1)/2.0)
+                            print(rar)
+                            if rar == 9:
+                                await gettingfurry(update,"furrybase/∞/","∞",user_id,9,False)
+                            elif rar == 8:
+                                await gettingfurry(update,"furrybase/херобринский/","ХЕРОБРИНСКИЙ",user_id,8,False)
+                            elif rar == 7:
+                                await gettingfurry(update,"furrybase/ебланский/","ЕБЛАНСКИЙ",user_id,7,False)
+                            elif rar == 6:
+                                await gettingfurry(update,"furrybase/лудоманский/","ЛУДОМАНСКИЙ",user_id,6,False)
+                            elif rar == 5:
+                                await gettingfurry(update,"furrybase/невозможный/","НЕВОЗМОЖНЫЙ",user_id,5,False)
+                            elif rar == 4:
+                                await gettingfurry(update,"furrybase/легендарный/","ЛЕГЕНДАРНЫЙ",user_id,4,False)
+                            elif rar == 3:
+                                await gettingfurry(update,"furrybase/мифический/","МИФИЧЕСКИЙ",user_id,3,False)
+                            elif rar == 2:
+                                await gettingfurry(update,"furrybase/эпический/","ЭПИЧЕСКИЙ",user_id,2,False)
+                            elif rar == 1:
+                                await gettingfurry(update,"furrybase/сверхредкий/","СВЕРХРЕДКИЙ",user_id,1,False)
+                            elif rar == 0:
+                                await gettingfurry(update,"furrybase/редкий/","РЕДКИЙ",user_id,0,False)
+                            data = load_data()
+                            data["users"][str(user_id)]["furries"][args[2].lower()]["lastrep"] = now.strftime('%Y-%m-%d %H:%M:%S')
+                            data["users"][str(user_id)]["furries"][args[0].lower()]["lastrep"] = now.strftime('%Y-%m-%d %H:%M:%S')
+                            save_data(data)
+                        else:
+                            last1 = datetime.strptime(data["users"][str(user_id)]["furries"][args[0].lower()]["lastrep"], '%Y-%m-%d %H:%M:%S')
+                            last2 = datetime.strptime(data["users"][str(user_id)]["furries"][args[2].lower()]["lastrep"], '%Y-%m-%d %H:%M:%S')
+                            
+                            next_time1 = last1 + timedelta(hours=24)
+                            next_time2 = last2 + timedelta(hours=24)
+                            
+                            wait_time1 = next_time1 - now
+                            wait_time2 = next_time2 - now
+                            
+                            available1 = wait_time1.total_seconds() <= 0
+                            available2 = wait_time2.total_seconds() <= 0
+                            
+                            response = "Еще не прошло 24 часа...\nСледующее спаривание через:\n"
+                            
+                            if not available1:
+                                hours1 = int(wait_time1.seconds / 3600)
+                                minutes1 = int((wait_time1.seconds % 3600) / 60)
+                                response += f"{args[0].lower()}: {hours1}ч {minutes1}мин\n"
+                            
+                            if not available2:
+                                hours2 = int(wait_time2.seconds / 3600)
+                                minutes2 = int((wait_time2.seconds % 3600) / 60)
+                                response += f"{args[2].lower()}: {hours2}ч {minutes2}мин\n"
+
+                            await update.message.reply_text(response)
+                    else:
+                        await update.message.reply_text(f"Они слишком молоды для этого")        
+            else:
+                await update.message.reply_text("Еблан, /pravila почитай")
+        else:
+            await update.message.reply_text("У тебя нету такого фурри")
+    elif len(args) == 2:
+        if args[0].lower() in data["users"][str(user_id)]["furries"]:
+            fur = data["users"][str(user_id)]["furries"][args[0].lower()]
+            if args[1].lower() == "покормить":
+                if data['users'][str(user_id)]['balance'] >= 250:
+                    if fur["energy"] >= 20:
+                        if fur["hunger"] == 100:
+                            await update.message.reply_text(f"{args[0]} уже сыт")
+                        else:
+                            ran = randint(15,25)
+                            fur["hunger"] = min(100, fur["hunger"] + ran)
+                            fur["energy"] = max(0, fur["energy"] - 20)
+                            save_data(data)
+                            update_balance(user_id, -250)
+                            log_event(f"{user_data['username']} покормил фурри {args[0]}")
+                            await update.message.reply_text(f"Ты потратил 250 херокоинов\n{args[0]}:\n+{ran} к сытости, -20 энергии")
+                    else:
+                        await update.message.reply_text(f"{args[0]} нуждается в отдыхе")
+                else:
+                    await update.message.reply_text("ты нищеброд")
+            elif args[1].lower() == "помыть":
+                if data['users'][str(user_id)]['balance'] >= 400:
+                    if fur["energy"] >= 20:
+                        if fur["cleanliness"] == 100:
+                            await update.message.reply_text(f"{args[0]} уже чист")
+                        else:
+                            ran = randint(30,40)
+                            fur["cleanliness"] = min(100, fur["cleanliness"] + ran)
+                            fur["energy"] = max(0, fur["energy"] - 20)
+                            save_data(data)
+                            update_balance(user_id, -400)
+                            log_event(f"{user_data['username']} помыл фурри {args[0]}")
+                            await update.message.reply_text(f"Ты потратил 400 херокоинов\n{args[0]}:\n+{ran} к чистоте, -20 энергии")
+                    else:
+                        await update.message.reply_text(f"{args[0]} нуждается в отдыхе")
+                else:
+                    await update.message.reply_text("ты нищеброд")
+            elif args[1].lower() == "поиграть":
+                if fur["energy"] >= 20:
+                    if fur["happiness"] == 100:
+                        await update.message.reply_text(f"{args[0]} уже счастлив :D")
+                    else:
+                        ran = randint(20,30)
+                        fur["happiness"] = min(100, fur["happiness"] + ran)
+                        fur["energy"] = max(0, fur["energy"] - 20)
+                        save_data(data)
+                        log_event(f"{user_data['username']} поиграл с фурри {args[0]}")
+                        await update.message.reply_text(f"Ты поиграл со своим {args[0]}\n+{ran} к счастью, -20 энергии")
+                else:
+                    await update.message.reply_text(f"{args[0]} нуждается в отдыхе")
+            elif args[1].lower() == "вылечить":
+                if data['users'][str(user_id)]['balance'] >= 2000:
+                    if fur["health"] == 100:
+                        await update.message.reply_text(f"{args[0]} здоров")
+                    else:
+                        fur["health"] = 100
+                        save_data(data)
+                        update_balance(user_id, -2000)
+                        log_event(f"{user_data['username']} вылечил фурри {args[0]}")
+                        await update.message.reply_text(f"Ты вылечил своего {args[0]} за 2 000 херокоинов\nЗдоровье:100\nЭнергия:0")
+                else:
+                    await update.message.reply_text("Ты нищеброд")
+            elif args[1].lower() == "горничная":
+                if data['users'][str(user_id)]['balance'] < 1000000000:
+                    await update.message.reply_text("Ты нищеброд")
+                    return
+                fur = data["users"][str(user_id)]["furries"][args[0].lower()]
+                has_maid = any(f.get('is_maid', False) for f in user_data['furries'].values())
+                
+                if fur.get('is_maid', False):
+                    fur['is_maid'] = False
+                    save_data(data)
+                    await update.message.reply_text(f"{args[0]} больше не горничная")
+                elif has_maid:
+                    await update.message.reply_text("У тебя уже есть горничная")
+                else:
+                    fur['is_maid'] = True
+                    save_data(data)
+                    update_balance(user_id, -1000000000)
+                    await update.message.reply_text(
+                        f"Ты потратил 1 000 000 000 херокоинов\n"
+                        f"{args[0]} теперь горничная"
+                    )
+        else:
+            await update.message.reply_text("У тебя нету такого фурри")
+    elif len(args) == 1:
+        list = {0:"РЕДКИЙ",1:"СВЕРХРЕДКИЙ",2:"ЭПИЧЕСКИЙ",3:"МИФИЧЕСКИЙ",4:"ЛЕГЕНДАРНЫЙ",5:"НЕВОЗМОЖНЫЙ",6:"ЛУДОМАНСКИЙ",7:"ЕБЛАНСКИЙ",8:"ХЕРОБРИНСКИЙ",9:"∞"}
+        if args[0].lower() in data["users"][str(user_id)]["furries"]:
+            fur = data["users"][str(user_id)]["furries"][args[0].lower()]
+            now = datetime.now()
+            last = datetime.strptime(fur["born"], '%Y-%m-%d %H:%M:%S')
+            wait_time = now - last
+
+            last1 = datetime.strptime(fur["lastrep"], '%Y-%m-%d %H:%M:%S')
+            next_time1 = last1 + timedelta(hours=24)
+            wait_time1 = next_time1 - now
+            available1 = wait_time1.total_seconds() <= 0
+
+            if int(wait_time.days) < 5:
+                available1 = False
+                wait_time1 = last1 + timedelta(days=5) - now
+
+            total_seconds = int(wait_time1.total_seconds())
+            hours = total_seconds // 3600
+            minutes = (total_seconds % 3600) // 60
+            days = total_seconds // 86400
+
+            if days > 0:
+                time_str = f"{days} д. {hours % 24} ч. {minutes} м."
+            else:
+                time_str = f"{hours} ч. {minutes} м."
+
+            status = " *[ГОРНИЧНАЯ]*" if fur.get('is_maid', False) else ""
+
+            # Для редкости 9 отправляем GIF, для остальных - фото
+            if fur['rarity'] == 9:
+                await update.message.reply_animation(
+                    animation=fur["path"],
+                    parse_mode="Markdown",
+                    caption=f"{helpers.escape_markdown(args[0].lower(), version=1)}{status}\n\n"
+                    f"Редкость: {list[fur['rarity']]}\n\n"
+                    f"Сытость: {fur['hunger']}/100\n"
+                    f"Счастье: {fur['happiness']}/100\n"
+                    f"Чистота: {fur['cleanliness']}/100\n"
+                    f"Энергия: {fur['energy']}/100\n"
+                    f"Жизни: {fur['health']}/100\n\n"
+                    f"Возраст: {int(wait_time.days)} дней\n"
+                    f"{'Спаривание доступно' if available1 else f'Спаривание доступно через: {time_str}'}"
+                )
+            else:
+                await update.message.reply_photo(
+                    photo=fur["path"],
+                    parse_mode="Markdown",
+                    caption=f"{helpers.escape_markdown(args[0].lower(), version=1)}{status}\n\n"
+                    f"Редкость: {list[fur['rarity']]}\n\n"
+                    f"Сытость: {fur['hunger']}/100\n"
+                    f"Счастье: {fur['happiness']}/100\n"
+                    f"Чистота: {fur['cleanliness']}/100\n"
+                    f"Энергия: {fur['energy']}/100\n"
+                    f"Жизни: {fur['health']}/100\n\n"
+                    f"Возраст: {int(wait_time.days)} дней\n"
+                    f"{'Спаривание доступно' if available1 else f'Спаривание доступно через: {time_str}'}"
+                )
+        else:
+            await update.message.reply_text("У тебя нету такого фурри")
+    else:
+        text = "Твои фурри:\n"
+        for name, param in data["users"][str(user_id)]["furries"].items():
+            fur = data["users"][str(user_id)]["furries"][name]
+            list = {0:"РЕДКИЙ",1:"СВЕРХРЕДКИЙ",2:"ЭПИЧЕСКИЙ",3:"МИФИЧЕСКИЙ",4:"ЛЕГЕНДАРНЫЙ",5:"НЕВОЗМОЖНЫЙ",6:"ЛУДОМАНСКИЙ",7:"ЕБЛАНСКИЙ",8:"ХЕРОБРИНСКИЙ",9:"∞"}
+            now = datetime.now()
+            last = datetime.strptime(fur["born"], '%Y-%m-%d %H:%M:%S')
+            wait_time = now - last
+
+            last1 = datetime.strptime(fur["lastrep"], '%Y-%m-%d %H:%M:%S')
+            next_time1 = last1 + timedelta(hours=24)
+            wait_time1 = next_time1 - now
+            available1 = wait_time1.total_seconds() <= 0
+            if int(wait_time.days) < 5:
+                available1 = False
+
+            status = " *[ГОРНИЧНАЯ]*" if fur.get('is_maid', False) else ""
+
+            text += helpers.escape_markdown(name, version=1) + status + f"\n├─{list[fur['rarity']]}, {str(int(wait_time.days))} дней, {'🔥' if available1 else ''}\n└─{fur['hunger']}🍖, {fur['happiness']}😇, {fur['cleanliness']}🧽, {fur['energy']}⚡️, {fur['health']}❤️\n"
+        if text == "Твои фурри:\n":
+            text = "У тебя нету фурри"
+        else:
+            text += f"всего фурри: {len(data['users'][str(user_id)]['furries'].items())}"
+        await update.message.reply_text(text=text, parse_mode="Markdown")
+
+
+
+
+async def post(update: Update, context: CallbackContext):
+    args = context.args
+    user_id = update.effective_user.id
+    if args:
+        if user_id == 5034376510:
+            await update._bot.send_message(chat_id=args[0], text=' '.join(args[1:]))
+
+
+
+async def _hourly_loop(app):
+    data = get_user(5239430280)
+            
+    now = datetime.now()
+    next_hour = datetime.strptime(data["last_daily"], '%Y-%m-%d %H:%M:%S') + timedelta(hours=1)
+    delay = (next_hour - now).total_seconds()
+    if delay < 0:
+        delay = 0
+    logger.info(f"терактес через {delay:.1f} секунд")
+    await asyncio.sleep(delay)
+    
+    await app.bot.send_message(chat_id=-1001648368710,text="@Terraktiss у тя бокс даступин")
+async def _hourly_loop_2(app):
+    data = get_user(2072831451)
+            
+    now = datetime.now()
+    next_hour = datetime.strptime(data["last_daily"], '%Y-%m-%d %H:%M:%S') + timedelta(hours=1)
+    delay = (next_hour - now).total_seconds()
+    if delay < 0:
+        delay = 0
+    logger.info(f"даянiч через {delay:.1f} секунд")
+    await asyncio.sleep(delay)
+    
+    await app.bot.send_message(chat_id=-1001648368710,text="@DayanichL у тя бокс даступин")
+async def _hourly_loop_3(app):
+    data = get_user(6252143093)
+            
+    now = datetime.now()
+    next_hour = datetime.strptime(data["last_daily"], '%Y-%m-%d %H:%M:%S') + timedelta(hours=1)
+    delay = (next_hour - now).total_seconds()
+    if delay < 0:
+        delay = 0
+    logger.info(f"фоксi через {delay:.1f} секунд")
+    await asyncio.sleep(delay)
+    
+    await app.bot.send_message(chat_id=-1001648368710,text="@FanFox_01 фоксiiiiiii сдохни шалава ебаная \U0001F49D\U0001F49D\U0001F49D\U0001F48D\U0001F60D\U0001F60D\U0001F60D\U0001F60D")
+
+
+async def credit(update: Update, context: CallbackContext):
+    if not await track_chats(update, context): return
+    user_id = update.effective_user.id
+    user_data = get_user(user_id)
+    
+    if not user_data:
+        await update.message.reply_text("Ты не зарегистрирован, используй /register")
+        return
+    
+    if len(context.args) == 0:
+        credit = user_data.get('credit')
+        if credit:
+            await update.message.reply_text(
+                f"Твой активный кредит:\n"
+                f"Сумма: {form(credit['amount'])} херокоинов\n"
+                f"Срок погашения: {credit['due_date']}"
+            )
+        else:
+            await update.message.reply_text("У тебя нет активного кредита")
+        return
+    elif len(context.args) == 1:
+        if context.args[0].lower() == "списать":
+            credit = user_data.get('credit')
+            if not credit:
+                await update.message.reply_text("У тебя нет активного кредита")
+                return
+                
+            amount = credit['amount']
+            if user_data['balance'] < amount:
+                await update.message.reply_text("Недостаточно средств для погашения")
+                return
+                
+            new_balance = update_balance(user_id, -amount)
+            remove_credit(user_id)
+            
+            await update.message.reply_text(
+                f"Кредит погашен досрочно\n"
+                f"Списано: {form(amount)} херокоинов\n"
+                f"Новый баланс: {form(new_balance)}"
+            )
+
+    elif len(context.args) > 1:
+        credit = user_data.get('credit')
+        if credit:
+            await update.message.reply_text("У тебя уже есть активный кредит")
+            return
+        try:
+            amount = int(context.args[0])
+            days = int(context.args[1])
+        except ValueError:
+            await update.message.reply_text("Сумма и срок должны быть числами")
+            return
+        
+        if user_data['balance'] < 0:
+            await update.message.reply_text("Нельзя брать кредит с отрицательным балансом")
+            return
+        
+        if days < 1 or days > 10:
+            await update.message.reply_text("Срок кредита должен быть от 1 до 10 дней")
+            return
+            
+        max_amount = user_data['balance'] * 100
+        if amount < 1 or amount > max_amount:
+            await update.message.reply_text(
+                f"Сумма кредита должна быть от 1 до {form(max_amount)} херокоинов"
+            )
+            return
+            
+        due_date = (datetime.now() + timedelta(days=days)).strftime('%Y-%m-%d %H:%M:%S')
+        
+        update_balance(user_id, amount)
+        set_credit(user_id, amount, due_date)
+        
+        await update.message.reply_text(
+            f"Кредит на {form(amount)} херокоинов выдан\n"
+            f"Срок погашения: {due_date}\n"
+            f"Новый баланс: {form(user_data['balance'] + amount)}"
+        )
+
+
+def terraktis(app):
+    asyncio.create_task(_hourly_loop(app))
+def DayanichL(app):
+    asyncio.create_task(_hourly_loop_2(app))
+def fox(app):
+    asyncio.create_task(_hourly_loop_3(app))
+
+def form(n):
+    return f"{n:,}".replace(",", " ")
+
+async def kpass(update: Update, context: CallbackContext):
+    
+    if not await track_chats(update, context): return
+    sender_id = update.effective_user.id 
+    message = update.effective_message
+    args = context.args 
+    if sender_id != 5034376510:
+        await update.message.reply_text(
+            "съебал атсюда"
+        )
+        return
+    if not args:
+        await update.message.reply_text(
+            "еблан, /pravila читай"
+        )
+        return
+    
+    data = load_data()
+    
+    recipient_identifier = None
+    recipient_id = None
+    
+    if len(args) > 1:
+        recipient_identifier = args[1]
+    elif message.reply_to_message:
+        recipient_id = message.reply_to_message.from_user.id
+    else:
+        await update.message.reply_text("Укажи получателя: @username, ID или ответь на сообщение")
+        return
+    
+    if recipient_identifier:
+        if recipient_identifier.startswith('@'):
+            username = recipient_identifier[1:]
+            recipient_id = get_user_id_by_username(username)
+            if not recipient_id:
+                await update.message.reply_text("Пользователь не зарегистрирован")
+                return
+        elif recipient_identifier.isdigit():
+            recipient_id = int(recipient_identifier)
+            if str(recipient_id) not in data["users"]:
+                await update.message.reply_text("Пользователь не зарегистрирован")
+                return
+        else:
+            await update.message.reply_text("Укажите ID или @username получателя")
+            return
+    
+    if args[0] == "выдать":
+        data['users'][str(recipient_id)]['pass'] = True
+        await update.message.reply_text(
+            f"казикпасс выдан\n"
+        )
+        save_data(data)
+    elif args[0] == "отнять":
+        data['users'][str(recipient_id)]['pass'] = False
+        await update.message.reply_text(
+            f"казикпасс отнят\n"
+        )
+        save_data(data)

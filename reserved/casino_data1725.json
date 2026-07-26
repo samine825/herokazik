@@ -1,0 +1,815 @@
+{
+  "users": {
+    "5034376510": {
+      "username": "Samine825",
+      "balance": 251859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768051859464169365911814768087027028701040471702852828518524828528528528528528528528282041507107177024828427070270288428480258285270727027282842702742707427484272027702472759749622345414088390645185946416936591181476805185946416936591181476805185946416936591181476805185946416936591181476805185946416936591181476805185946416936591181476805185946416936591181476814581486,
+      "furries": {
+        "furry1": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/photo_66_2025-08-05_11-39-41.jpg",
+          "hunger": 83,
+          "happiness": 59,
+          "energy": 60,
+          "cleanliness": 69,
+          "health": 95,
+          "born": "2025-12-06 07:18:13",
+          "lastrep": "2025-12-06 07:18:13",
+          "is_maid": false
+        },
+        "furry3": {
+          "rarity": 2,
+          "path": "furrybase/эпический/photo_81_2025-08-05_11-39-41.jpg",
+          "hunger": 53,
+          "happiness": 67,
+          "energy": 100,
+          "cleanliness": 85,
+          "health": 100,
+          "born": "2025-12-07 07:30:07",
+          "lastrep": "2025-12-07 07:30:07",
+          "is_maid": false
+        },
+        "furry4": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/photo_62_2025-08-05_11-39-41.jpg",
+          "hunger": 94,
+          "happiness": 97,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 16:57:29",
+          "lastrep": "2025-12-08 16:57:29",
+          "is_maid": false
+        },
+        "furry5": {
+          "rarity": 3,
+          "path": "furrybase/мифический/photo_2_2025-08-04_14-45-32.jpg",
+          "hunger": 97,
+          "happiness": 96,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 16:59:53",
+          "lastrep": "2025-12-08 16:59:53",
+          "is_maid": false
+        },
+        "furry6": {
+          "rarity": 3,
+          "path": "furrybase/мифический/photo_11_2025-08-05_11-39-41.jpg",
+          "hunger": 97,
+          "happiness": 97,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 17:40:09",
+          "lastrep": "2025-12-08 17:40:09",
+          "is_maid": false
+        }
+      },
+      "minetov": 82571428400000000000000000000000001694791917510710270282742027147197107170141702910247275270274175207525,
+      "last_daily": "2025-12-08 19:54:31",
+      "last_ultra_daily": "2025-12-08 19:01:38",
+      "registered_at": "2025-12-05 22:09:27",
+      "pass": true
+    },
+    "7190983630": {
+      "username": "G1ronin31",
+      "balance": 373736176665,
+      "furries": {
+        "furry1": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/photo_84_2025-08-05_11-39-41.jpg",
+          "hunger": 59,
+          "happiness": 69,
+          "energy": 100,
+          "cleanliness": 83,
+          "health": 100,
+          "born": "2025-12-07 07:29:51",
+          "lastrep": "2025-12-07 07:29:51",
+          "is_maid": false
+        },
+        "furry2": {
+          "rarity": 0,
+          "path": "furrybase/редкий/furry(2).jpg",
+          "hunger": 90,
+          "happiness": 90,
+          "energy": 100,
+          "cleanliness": 94,
+          "health": 100,
+          "born": "2025-12-08 12:18:43",
+          "lastrep": "2025-12-08 12:18:43",
+          "is_maid": false
+        },
+        "furry3": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/photo_82_2025-08-05_11-39-41.jpg",
+          "hunger": 91,
+          "happiness": 94,
+          "energy": 100,
+          "cleanliness": 96,
+          "health": 100,
+          "born": "2025-12-08 13:23:25",
+          "lastrep": "2025-12-08 13:23:25",
+          "is_maid": false
+        },
+        "furry4": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/furry(13).jpg",
+          "hunger": 100,
+          "happiness": 100,
+          "energy": 100,
+          "cleanliness": 100,
+          "health": 100,
+          "born": "2025-12-08 19:54:16",
+          "lastrep": "2025-12-08 19:54:16",
+          "is_maid": false
+        },
+        "furry5": {
+          "rarity": 0,
+          "path": "furrybase/редкий/furry(7).jpg",
+          "hunger": 100,
+          "happiness": 100,
+          "energy": 100,
+          "cleanliness": 100,
+          "health": 100,
+          "born": "2025-12-08 19:54:35",
+          "lastrep": "2025-12-08 19:54:35",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 19:54:35",
+      "last_ultra_daily": "2025-12-08 19:54:16",
+      "registered_at": "2025-12-06 06:14:47",
+      "credit": null,
+      "pass": true
+    },
+    "1175002902": {
+      "username": "choshpka",
+      "balance": 1226081014594084341622176338325067676814023107160065207976633653742768521960981428298467217352342646094613019101623326313183813568451357473804,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_64_2025-08-05_11-39-41.jpg",
+          "hunger": 85,
+          "happiness": 89,
+          "energy": 100,
+          "cleanliness": 93,
+          "health": 100,
+          "born": "2025-12-08 08:32:12",
+          "lastrep": "2025-12-08 08:32:12",
+          "is_maid": false
+        },
+        "furry2": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_24_2025-08-05_11-39-41.jpg",
+          "hunger": 94,
+          "happiness": 99,
+          "energy": 100,
+          "cleanliness": 99,
+          "health": 100,
+          "born": "2025-12-08 15:38:17",
+          "lastrep": "2025-12-08 15:38:17",
+          "is_maid": false
+        },
+        "furry3": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_63_2025-08-05_11-39-41.jpg",
+          "hunger": 96,
+          "happiness": 96,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 17:05:42",
+          "lastrep": "2025-12-08 17:05:42",
+          "is_maid": false
+        },
+        "furry4": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_77_2025-08-05_11-39-41.jpg",
+          "hunger": 94,
+          "happiness": 98,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 17:07:12",
+          "lastrep": "2025-12-08 17:07:12",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 17:37:15",
+      "last_ultra_daily": "2025-12-08 19:01:35",
+      "registered_at": "2025-12-06 06:16:17",
+      "pass": true
+    },
+    "2116166113": {
+      "username": "Subvel",
+      "balance": 7370,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-06 07:20:09",
+      "last_ultra_daily": null,
+      "registered_at": "2025-12-06 07:19:05",
+      "credit": null,
+      "pass": null
+    },
+    "1107880322": {
+      "username": "Vednari",
+      "balance": 4637558,
+      "furries": {
+        "1": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/photo_83_2025-08-05_11-39-41.jpg",
+          "hunger": 88,
+          "happiness": 96,
+          "energy": 100,
+          "cleanliness": 89,
+          "health": 100,
+          "born": "2025-12-07 19:33:23",
+          "lastrep": "2025-12-07 19:33:23",
+          "is_maid": false
+        },
+        "furry3": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_40_2025-08-05_11-39-41.jpg",
+          "hunger": 97,
+          "happiness": 96,
+          "energy": 100,
+          "cleanliness": 99,
+          "health": 100,
+          "born": "2025-12-08 16:57:52",
+          "lastrep": "2025-12-08 16:57:52",
+          "is_maid": false
+        },
+        "furry4": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_17_2025-08-05_11-39-41.jpg",
+          "hunger": 96,
+          "happiness": 99,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 18:25:50",
+          "lastrep": "2025-12-08 18:25:50",
+          "is_maid": false
+        },
+        "furry5": {
+          "rarity": 0,
+          "path": "furrybase/редкий/furry(2).jpg",
+          "hunger": 100,
+          "happiness": 100,
+          "energy": 100,
+          "cleanliness": 100,
+          "health": 100,
+          "born": "2025-12-08 19:48:59",
+          "lastrep": "2025-12-08 19:48:59",
+          "is_maid": false
+        }
+      },
+      "minetov": 178,
+      "last_daily": "2025-12-08 20:19:50",
+      "last_ultra_daily": "2025-12-08 20:19:53",
+      "registered_at": "2025-12-06 07:44:36",
+      "credit": null,
+      "pass": true
+    },
+    "8277537093": {
+      "username": "erroruurst",
+      "balance": 2598,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_10_2025-08-04_23-18-11.jpg",
+          "hunger": 28,
+          "happiness": 58,
+          "energy": 100,
+          "cleanliness": 70,
+          "health": 94,
+          "born": "2025-12-06 07:48:34",
+          "lastrep": "2025-12-06 07:48:34",
+          "is_maid": false
+        },
+        "furry2": {
+          "rarity": 0,
+          "path": "furrybase/редкий/furry(7).jpg",
+          "hunger": 98,
+          "happiness": 96,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 16:56:28",
+          "lastrep": "2025-12-08 16:56:28",
+          "is_maid": false
+        }
+      },
+      "minetov": 83,
+      "last_daily": "2025-12-08 16:56:28",
+      "last_ultra_daily": "2025-12-08 16:57:52",
+      "registered_at": "2025-12-06 07:48:23",
+      "credit": null,
+      "pass": null
+    },
+    "8402309977": {
+      "username": "mryakovxd",
+      "balance": 9980,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 09:28:12",
+      "last_ultra_daily": null,
+      "registered_at": "2025-12-06 07:50:42",
+      "credit": null,
+      "pass": null
+    },
+    "2040937847": {
+      "username": "sofifpi",
+      "balance": 4883930,
+      "furries": {
+        "furry1": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/photo_22_2025-08-05_11-39-41.jpg",
+          "hunger": 96,
+          "happiness": 99,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 16:58:07",
+          "lastrep": "2025-12-08 16:58:07",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 11:59:18",
+      "last_ultra_daily": "2025-12-08 16:58:07",
+      "registered_at": "2025-12-06 07:58:42",
+      "credit": null,
+      "pass": null
+    },
+    "7560453392": {
+      "username": "ecstas6_66",
+      "balance": 7867666,
+      "furries": {
+        "furry1": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/photo_43_2025-08-05_11-39-41.jpg",
+          "hunger": 100,
+          "happiness": 100,
+          "energy": 100,
+          "cleanliness": 100,
+          "health": 100,
+          "born": "2025-12-08 19:29:44",
+          "lastrep": "2025-12-08 19:29:44",
+          "is_maid": false
+        },
+        "furry2": {
+          "rarity": 2,
+          "path": "furrybase/эпический/photo_11_2025-08-04_23-18-11.jpg",
+          "hunger": 100,
+          "happiness": 100,
+          "energy": 100,
+          "cleanliness": 100,
+          "health": 100,
+          "born": "2025-12-08 19:29:50",
+          "lastrep": "2025-12-08 19:29:50",
+          "is_maid": false
+        }
+      },
+      "minetov": 2,
+      "last_daily": "2025-12-08 19:29:44",
+      "last_ultra_daily": "2025-12-08 19:29:49",
+      "registered_at": "2025-12-06 08:12:18",
+      "credit": null,
+      "pass": null
+    },
+    "6480379815": {
+      "username": "Weiss_Dogg",
+      "balance": 2840,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_10_2025-08-04_23-18-11.jpg",
+          "hunger": 31,
+          "happiness": 56,
+          "energy": 100,
+          "cleanliness": 71,
+          "health": 100,
+          "born": "2025-12-06 08:46:16",
+          "lastrep": "2025-12-06 08:46:16",
+          "is_maid": false
+        }
+      },
+      "minetov": 5,
+      "last_daily": "2025-12-08 09:22:11",
+      "last_ultra_daily": null,
+      "registered_at": "2025-12-06 08:45:56",
+      "credit": null,
+      "pass": null
+    },
+    "2066831597": {
+      "username": "Grushakille",
+      "balance": 2465107,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/furry(1).jpg",
+          "hunger": 28,
+          "happiness": 51,
+          "energy": 100,
+          "cleanliness": 74,
+          "health": 98,
+          "born": "2025-12-06 11:59:27",
+          "lastrep": "2025-12-06 11:59:27",
+          "is_maid": false
+        }
+      },
+      "minetov": 4,
+      "last_daily": "2025-12-07 19:01:11",
+      "last_ultra_daily": "2025-12-07 15:41:30",
+      "registered_at": "2025-12-06 11:14:36",
+      "credit": null,
+      "pass": null
+    },
+    "5297471599": {
+      "username": "dude_fasoli",
+      "balance": 6497508,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 17:12:41",
+      "last_ultra_daily": "2025-12-07 17:29:23",
+      "registered_at": "2025-12-06 16:56:28",
+      "credit": null,
+      "pass": null
+    },
+    "1729202994": {
+      "username": "loguert",
+      "balance": 59823826235525846375440755478987779679024669188231733470491512795883807380944121715651655383550453457234659856464,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 17:16:05",
+      "last_ultra_daily": "2025-12-08 16:56:28",
+      "registered_at": "2025-12-06 17:25:07",
+      "credit": {
+        "amount": 82585802720200,
+        "due_date": "2025-12-18 17:01:28"
+      },
+      "pass": true
+    },
+    "7787981991": {
+      "username": "ᅠ ",
+      "balance": 0,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 08:26:53",
+      "last_ultra_daily": "2025-12-08 08:26:49",
+      "registered_at": "2025-12-06 17:34:27",
+      "credit": null,
+      "pass": null
+    },
+    "8561982531": {
+      "username": ".",
+      "balance": 0,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 16:57:58",
+      "last_ultra_daily": "2025-12-08 16:57:04",
+      "registered_at": "2025-12-06 17:36:18",
+      "credit": null,
+      "pass": null
+    },
+    "7145938781": {
+      "username": "TaynoPernul42",
+      "balance": 0,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 08:27:21",
+      "last_ultra_daily": "2025-12-08 08:27:25",
+      "registered_at": "2025-12-06 17:38:12",
+      "credit": null,
+      "pass": null
+    },
+    "6640277782": {
+      "username": "naceest",
+      "balance": 0,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 08:25:36",
+      "last_ultra_daily": "2025-12-08 08:25:40",
+      "registered_at": "2025-12-06 17:39:40",
+      "credit": null,
+      "pass": null
+    },
+    "1087968824": {
+      "username": "GroupAnonymousBot",
+      "balance": 0,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 08:22:55",
+      "last_ultra_daily": "2025-12-07 19:05:04",
+      "registered_at": "2025-12-06 17:45:03",
+      "credit": null,
+      "pass": null
+    },
+    "136817688": {
+      "username": "Channel_Bot",
+      "balance": 0,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 08:21:57",
+      "last_ultra_daily": "2025-12-07 19:04:17",
+      "registered_at": "2025-12-06 17:46:00",
+      "credit": null,
+      "pass": null
+    },
+    "5197104181": {
+      "username": "Kiril_Kirik45",
+      "balance": 95850,
+      "furries": {
+        "1": {
+          "rarity": 5,
+          "path": "furrybase/невозможный/photo_12_2025-08-04_23-18-11.jpg",
+          "hunger": 74,
+          "happiness": 82,
+          "energy": 100,
+          "cleanliness": 91,
+          "health": 100,
+          "born": "2025-12-08 05:34:42",
+          "lastrep": "2025-12-08 05:34:42",
+          "is_maid": false
+        },
+        "2": {
+          "rarity": 1,
+          "path": "furrybase/сверхредкий/furry(15).jpg",
+          "hunger": 71,
+          "happiness": 84,
+          "energy": 100,
+          "cleanliness": 89,
+          "health": 100,
+          "born": "2025-12-06 17:54:03",
+          "lastrep": "2025-12-06 17:54:03",
+          "is_maid": false
+        },
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_2_2025-08-04_23-18-11.jpg",
+          "hunger": 94,
+          "happiness": 98,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 16:03:33",
+          "lastrep": "2025-12-08 16:03:33",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 17:08:59",
+      "last_ultra_daily": "2025-12-08 05:34:42",
+      "registered_at": "2025-12-06 17:53:35",
+      "credit": null,
+      "pass": true
+    },
+    "6524710953": {
+      "username": "FoWaIz1",
+      "balance": 6472856,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_85_2025-08-05_11-39-41.jpg",
+          "hunger": 96,
+          "happiness": 98,
+          "energy": 100,
+          "cleanliness": 98,
+          "health": 100,
+          "born": "2025-12-08 17:45:59",
+          "lastrep": "2025-12-08 17:45:59",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-07 12:53:35",
+      "last_ultra_daily": "2025-12-08 17:45:59",
+      "registered_at": "2025-12-06 18:13:06",
+      "credit": null,
+      "pass": null
+    },
+    "5239430280": {
+      "username": "Terraktiss",
+      "balance": 121524,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_63_2025-08-05_11-39-41.jpg",
+          "hunger": 97,
+          "happiness": 96,
+          "energy": 100,
+          "cleanliness": 99,
+          "health": 100,
+          "born": "2025-12-08 16:56:58",
+          "lastrep": "2025-12-08 16:56:58",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 16:56:33",
+      "last_ultra_daily": "2025-12-08 16:56:58",
+      "registered_at": "2025-12-07 10:56:54",
+      "credit": null,
+      "pass": null
+    },
+    "7863637536": {
+      "username": "kokosikiXD",
+      "balance": 6483,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_10_2025-08-05_11-39-41.jpg",
+          "hunger": 59,
+          "happiness": 73,
+          "energy": 100,
+          "cleanliness": 84,
+          "health": 100,
+          "born": "2025-12-07 13:01:01",
+          "lastrep": "2025-12-07 13:01:01",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-07 13:01:44",
+      "last_ultra_daily": "2025-12-07 13:01:01",
+      "registered_at": "2025-12-07 13:00:37",
+      "credit": null,
+      "pass": null
+    },
+    "6371734978": {
+      "username": "TronDotaTwo",
+      "balance": 6417227,
+      "furries": {
+        "furry1": {
+          "rarity": 3,
+          "path": "furrybase/мифический/photo_86_2025-08-05_11-39-41.jpg",
+          "hunger": 93,
+          "happiness": 95,
+          "energy": 100,
+          "cleanliness": 97,
+          "health": 100,
+          "born": "2025-12-08 14:59:18",
+          "lastrep": "2025-12-08 14:59:18",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 14:59:10",
+      "last_ultra_daily": "2025-12-08 17:07:17",
+      "registered_at": "2025-12-07 16:41:00",
+      "credit": null,
+      "pass": null
+    },
+    "5234188574": {
+      "username": "apelsin_seledka",
+      "balance": 25607131371643113929,
+      "furries": {
+        "сднёмвайпа": {
+          "rarity": 4,
+          "path": "furrybase/легендарный/furry(16).jpg",
+          "hunger": 100,
+          "happiness": 100,
+          "energy": 40,
+          "cleanliness": 92,
+          "health": 100,
+          "born": "2025-12-07 18:43:29",
+          "lastrep": "2025-12-07 18:43:29",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 19:27:54",
+      "last_ultra_daily": "2025-12-08 19:04:45",
+      "registered_at": "2025-12-07 18:42:26",
+      "credit": null,
+      "pass": null
+    },
+    "5296773461": {
+      "username": "iloveXIII",
+      "balance": 638214995104272471020215,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_7_2025-08-05_11-39-41.jpg",
+          "hunger": 100,
+          "happiness": 100,
+          "energy": 100,
+          "cleanliness": 100,
+          "health": 100,
+          "born": "2025-12-08 19:53:56",
+          "lastrep": "2025-12-08 19:53:56",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 17:06:07",
+      "last_ultra_daily": "2025-12-08 19:53:56",
+      "registered_at": "2025-12-07 20:03:31",
+      "credit": null,
+      "pass": true
+    },
+    "7223493890": {
+      "username": "Virko",
+      "balance": 719831297,
+      "furries": {
+        "furry1": {
+          "rarity": 0,
+          "path": "furrybase/редкий/photo_85_2025-08-05_11-39-41.jpg",
+          "hunger": 74,
+          "happiness": 80,
+          "energy": 100,
+          "cleanliness": 91,
+          "health": 100,
+          "born": "2025-12-07 20:46:21",
+          "lastrep": "2025-12-07 20:46:21",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 05:29:36",
+      "last_ultra_daily": "2025-12-07 20:46:27",
+      "registered_at": "2025-12-07 20:46:13",
+      "credit": null,
+      "pass": true
+    },
+    "5008242755": {
+      "username": "AApntm",
+      "balance": 600000000000981175,
+      "furries": {},
+      "minetov": 0,
+      "last_daily": "2025-12-08 14:32:33",
+      "last_ultra_daily": "2025-12-08 14:31:51",
+      "registered_at": "2025-12-08 14:31:19",
+      "credit": {
+        "amount": 581000,
+        "due_date": "2025-12-18 14:45:38"
+      },
+      "pass": true
+    },
+    "975780685": {
+      "username": "Poopment",
+      "balance": 8258517119431727583901,
+      "furries": {
+        "furry1": {
+          "rarity": 2,
+          "path": "furrybase/эпический/photo_8_2025-08-05_11-39-41.jpg",
+          "hunger": 96,
+          "happiness": 97,
+          "energy": 100,
+          "cleanliness": 99,
+          "health": 100,
+          "born": "2025-12-08 17:13:31",
+          "lastrep": "2025-12-08 17:13:31",
+          "is_maid": false
+        },
+        "furry2": {
+          "rarity": 3,
+          "path": "furrybase/мифический/photo_50_2025-08-05_11-39-41.jpg",
+          "hunger": 95,
+          "happiness": 96,
+          "energy": 100,
+          "cleanliness": 99,
+          "health": 100,
+          "born": "2025-12-08 17:13:39",
+          "lastrep": "2025-12-08 17:13:39",
+          "is_maid": false
+        }
+      },
+      "minetov": 0,
+      "last_daily": "2025-12-08 17:13:39",
+      "last_ultra_daily": "2025-12-08 17:13:31",
+      "registered_at": "2025-12-08 17:13:10",
+      "credit": null,
+      "pass": null
+    },
+    "8314570045": {
+      "username": ".",
+      "balance": 3698450,
+      "furries": {},
+      "minetov": 1,
+      "last_daily": "2025-12-08 17:24:04",
+      "last_ultra_daily": "2025-12-08 17:22:56",
+      "registered_at": "2025-12-08 17:21:29",
+      "credit": null,
+      "pass": null
+    }
+  },
+  "chats": [
+    -1001648368710,
+    5034376510,
+    2116166113,
+    -1003231124515,
+    -1002639662035,
+    -1002888426384,
+    7787981991,
+    -1003498064090,
+    6524710953,
+    1729202994,
+    7863637536,
+    1175002902,
+    5234188574
+  ]
+}
