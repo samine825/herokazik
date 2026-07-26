@@ -1,0 +1,4 @@
+__pycache__/
+reserved/
+logs/
+casino_data.json

@@ -1,2 +1,2 @@
 # herokazik
-gamno
+/XBATIT 7 ega 
